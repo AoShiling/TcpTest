@@ -52,13 +52,29 @@ void TcpSrvGui::initForm() {
 }
 
 void TcpSrvGui::initConnections() {
-
+	connect(pbListen, SIGNAL(clicked()), this, SLOT(slListen()));
+	connect(pbClose, SIGNAL(clicked()), this, SLOT(slClose()));
+	connect(&tcpSrv, SIGNAL(sgAccepted()), this, SLOT(slAccepted()));
 }
 
 void TcpSrvGui::slListen() {
+	if (!tcpSrv.listen()) return;
 
+	lbStatus->setText("Listening");
+
+	QString sSrvAddr = tcpSrv.getSrvAddr();
+	QString sSrvPort = QString::number(tcpSrv.getSrvPort());
+	lbSrv->setText(sSRV + sSrvAddr + ":" + sSrvPort);
 }
 
 void TcpSrvGui::slClose() {
+	tcpSrv.close();
+}
 
+void TcpSrvGui::slAccepted() {
+	lbStatus->setText("Accepted");
+
+	QString sCliAddr = tcpSrv.getCliAddr();
+	QString sCliPort = QString::number(tcpSrv.getCliPort());
+	lbCli->setText(sCLI + sCliAddr + ":" + sCliPort);
 }

@@ -10,6 +10,9 @@ TcpCliGui::TcpCliGui(QWidget *parent)
 	  leAddr(new QLineEdit("<address>")),
 	  lePort(new QLineEdit("<port>")),
 
+	  lbCli(new QLabel("<addr>:<port>")),
+	  sCLI("This host: "),
+
 	  leMsg(new QLineEdit("<message>")),
 	  pbTransmit(new QPushButton("Transmit"))
 {
@@ -53,6 +56,7 @@ void TcpCliGui::initForm() {
 	QVBoxLayout* vbxMain = new QVBoxLayout;
 	vbxMain->addLayout(hbxConnect);
 	vbxMain->addLayout(hbxParams);
+	vbxMain->addWidget(lbCli);
 	vbxMain->addLayout(hbxMsg);
 
 	setCentralWidget(new QWidget);
@@ -61,17 +65,28 @@ void TcpCliGui::initForm() {
 }
 
 void TcpCliGui::initConnections() {
-
+	connect(pbConnect, SIGNAL(clicked()), this, SLOT(slConnect()));
+	connect(pbDisconnect, SIGNAL(clicked()), this, SLOT(slDisconnect()));
+	connect(pbTransmit, SIGNAL(clicked()), this, SLOT(slTransmit()));
+	connect(tcpCli.getClient(), SIGNAL(connected()), this, SLOT(slArferConnection()));
 }
 
 void TcpCliGui::slConnect() {
-
+	tcpCli.connect(leAddr->text(), lePort->text().toInt());
 }
 
 void TcpCliGui::slDisconnect() {
-
+	tcpCli.disconnect();
 }
 
 void TcpCliGui::slTransmit() {
+	tcpCli.transmit();
+}
 
+void TcpCliGui::slArferConnection() {
+	lbStatus->setText("Connected");
+
+	QString sAddr = tcpCli.getAddr();
+	QString sPort = QString::number(tcpCli.getPort());
+	lbCli->setText(sCLI + sAddr + ":" + sPort);
 }

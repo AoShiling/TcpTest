@@ -22,6 +22,7 @@ public slots:
 	void slConnect();
 	void slDisconnect();
 	void slTransmit();
+	void slArferConnection();
 
 private:
 	void initMembers();
@@ -35,10 +36,13 @@ private:
 	QLineEdit* leAddr;
 	QLineEdit* lePort;
 
+	QLabel* lbCli;
+	const QString sCLI;
+
 	QLineEdit* leMsg;
 	QPushButton* pbTransmit;
 
-	TcpCli TcpCli;
+	TcpCli tcpCli;
 };
 
 #endif // TCPCLIGUI_H

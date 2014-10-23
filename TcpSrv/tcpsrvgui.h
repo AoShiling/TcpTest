@@ -20,6 +20,8 @@ public slots:
 	void slListen();
 	void slClose();
 
+	void slAccepted();
+
 private:
 	void initMembers();
 	void initForm();
