@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QMessageBox>
 
 #include "tcpsrv.h"
 
@@ -18,9 +19,8 @@ public:
 
 public slots:
 	void slListen();
-	void slClose();
-
 	void slAccepted();
+	void slError();
 
 private:
 	void initMembers();

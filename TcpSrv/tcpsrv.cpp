@@ -2,18 +2,24 @@
 
 TcpSrv::TcpSrv() : QObject() {
 	QObject::connect(&tcpSrv, SIGNAL(newConnection()), this, SLOT(slAcceptConnection()));
+	QObject::connect(&tcpSrv, SIGNAL(acceptError()), this, SIGNAL(sgNotAccepted()));
 }
 
 TcpSrv::~TcpSrv() {
 	tcpSrv.close();
-	tcpConnection->close();
+
+	if (tcpConnection == nullptr)
+		tcpConnection->close();
 }
 
-bool TcpSrv::listen() {
-	return tcpSrv.listen();
+void TcpSrv::slListen() {
+	if (tcpSrv.listen())
+		emit sgListen();
+	else
+		emit sgNotListen();
 }
 
-void TcpSrv::close() {
+void TcpSrv::slClose() {
 	tcpSrv.close();
 	tcpConnection->close();
 }
@@ -22,20 +28,16 @@ const QString TcpSrv::getSrvAddr() const {
 	return tcpSrv.serverAddress().toString();
 }
 
-quint16 TcpSrv::getSrvPort() const {
-	return tcpSrv.serverPort();
+const QString TcpSrv::getSrvPort() const {
+	return QString::number(tcpSrv.serverPort());
 }
 
 const QString TcpSrv::getCliAddr() const {
 	return tcpConnection->peerAddress().toString();
 }
 
-quint16 TcpSrv::getCliPort() const {
-	return tcpConnection->peerPort();
-}
-
-const QTcpServer* TcpSrv::getServer() const {
-	return &tcpSrv;
+const QString TcpSrv::getCliPort() const {
+	return QString::number(tcpConnection->peerPort());
 }
 
 void TcpSrv::slAcceptConnection() {

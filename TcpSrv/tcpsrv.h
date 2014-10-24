@@ -12,22 +12,23 @@ public:
 	TcpSrv();
 	~TcpSrv();
 
-	bool listen();
-	void close();
-
 	const QString getSrvAddr() const;
-	quint16 getSrvPort() const;
+	const QString getSrvPort() const;
 
 	const QString getCliAddr() const;
-	quint16 getCliPort() const;
-
-	const QTcpServer* getServer() const;
+	const QString getCliPort() const;
 
 public slots:
 	void slAcceptConnection();
 
+	void slListen();
+	void slClose();
+
 signals:
 	void sgAccepted();
+	void sgListen();
+	void sgNotAccepted();
+	void sgNotListen();
 
 private:
 	QTcpServer tcpSrv;

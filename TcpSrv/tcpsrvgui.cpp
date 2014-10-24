@@ -52,29 +52,31 @@ void TcpSrvGui::initForm() {
 }
 
 void TcpSrvGui::initConnections() {
-	connect(pbListen, SIGNAL(clicked()), this, SLOT(slListen()));
-	connect(pbClose, SIGNAL(clicked()), this, SLOT(slClose()));
+	connect(pbListen, SIGNAL(clicked()), &tcpSrv, SLOT(slListen()));
+	connect(pbClose, SIGNAL(clicked()), &tcpSrv, SLOT(slClose()));
+
+	connect(&tcpSrv, SIGNAL(sgListen()), this, SLOT(slListen()));
 	connect(&tcpSrv, SIGNAL(sgAccepted()), this, SLOT(slAccepted()));
+	connect(&tcpSrv, SIGNAL(sgNotListen()), this, SLOT(slError()));
+	connect(&tcpSrv, SIGNAL(sgNotAccepted()), this, SLOT(slError()));
 }
 
 void TcpSrvGui::slListen() {
-	if (!tcpSrv.listen()) return;
-
 	lbStatus->setText("Listening");
 
 	QString sSrvAddr = tcpSrv.getSrvAddr();
-	QString sSrvPort = QString::number(tcpSrv.getSrvPort());
+	QString sSrvPort = tcpSrv.getSrvPort();
 	lbSrv->setText(sSRV + sSrvAddr + ":" + sSrvPort);
-}
-
-void TcpSrvGui::slClose() {
-	tcpSrv.close();
 }
 
 void TcpSrvGui::slAccepted() {
 	lbStatus->setText("Accepted");
 
 	QString sCliAddr = tcpSrv.getCliAddr();
-	QString sCliPort = QString::number(tcpSrv.getCliPort());
+	QString sCliPort = tcpSrv.getCliPort();
 	lbCli->setText(sCLI + sCliAddr + ":" + sCliPort);
+}
+
+void TcpSrvGui::slError() {
+	QMessageBox::critical(this, "Error", "Some shit happened.");
 }
