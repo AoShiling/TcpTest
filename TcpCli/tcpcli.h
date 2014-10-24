@@ -5,22 +5,31 @@
 #include <QHostAddress>
 #include <QObject>
 
-class TcpCli {
+class TcpCli : public QObject {
+	Q_OBJECT
+
 public:
 	TcpCli();
 	~TcpCli();
 
-	void connect(const QString& srvAddr, const quint16 srvPort);
-	void disconnect();
-	void transmit();
+	const QString getHostAddr() const;
+	const QString getHostPort() const;
 
-	const QTcpSocket* getClient() const;
+public slots:
+	void slConnect();
+	void slDisconnect();
+	void slTransmit();
 
-	const QString getAddr() const;
-	quint16 getPort() const;
+	void slSetSrvAddr(const QString& addr);
+	void slSetSrvPort(const QString& port);
+
+signals:
+	void connected();	// wrapper emits signal when socket emits it
 
 private:
 	QTcpSocket tcpCli;
+	QHostAddress srvAddr;
+	quint16 srvPort;
 };
 
 #endif // TCPCLI_H

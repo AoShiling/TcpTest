@@ -65,28 +65,16 @@ void TcpCliGui::initForm() {
 }
 
 void TcpCliGui::initConnections() {
-	connect(pbConnect, SIGNAL(clicked()), this, SLOT(slConnect()));
-	connect(pbDisconnect, SIGNAL(clicked()), this, SLOT(slDisconnect()));
-	connect(pbTransmit, SIGNAL(clicked()), this, SLOT(slTransmit()));
-	connect(tcpCli.getClient(), SIGNAL(connected()), this, SLOT(slArferConnection()));
+	connect(pbConnect, SIGNAL(clicked()), &tcpCli, SLOT(slConnect()));
+	connect(pbDisconnect, SIGNAL(clicked()), &tcpCli, SLOT(slDisconnect()));
+	connect(pbTransmit, SIGNAL(clicked()), &tcpCli, SLOT(slTransmit()));
+
+	connect(&tcpCli, SIGNAL(connected()), this, SLOT(slConnected()));
+	connect(leAddr, SIGNAL(textEdited(QString)), &tcpCli, SLOT(slSetSrvAddr(QString)));
+	connect(lePort, SIGNAL(textEdited(QString)), &tcpCli, SLOT(slSetSrvPort(QString)));
 }
 
-void TcpCliGui::slConnect() {
-	tcpCli.connect(leAddr->text(), lePort->text().toInt());
-}
-
-void TcpCliGui::slDisconnect() {
-	tcpCli.disconnect();
-}
-
-void TcpCliGui::slTransmit() {
-	tcpCli.transmit();
-}
-
-void TcpCliGui::slArferConnection() {
+void TcpCliGui::slConnected() {
 	lbStatus->setText("Connected");
-
-	QString sAddr = tcpCli.getAddr();
-	QString sPort = QString::number(tcpCli.getPort());
-	lbCli->setText(sCLI + sAddr + ":" + sPort);
+	lbCli->setText(sCLI + tcpCli.getHostAddr() + ":" + tcpCli.getHostPort());
 }

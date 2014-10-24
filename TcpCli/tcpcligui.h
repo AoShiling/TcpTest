@@ -19,10 +19,7 @@ public:
 	~TcpCliGui();
 
 public slots:
-	void slConnect();
-	void slDisconnect();
-	void slTransmit();
-	void slArferConnection();
+	void slConnected();
 
 private:
 	void initMembers();

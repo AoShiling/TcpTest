@@ -1,30 +1,37 @@
 #include "tcpcli.h"
 
-TcpCli::TcpCli() {}
+TcpCli::TcpCli() : QObject() {
+	// wrapper emits signal when socket emits it
+	QObject::connect(&tcpCli, SIGNAL(connected()), this, SIGNAL(connected()));
+}
 
 TcpCli::~TcpCli() {
 
 }
 
-void TcpCli::connect(const QString& srvAddr, const quint16 srvPort) {
-	tcpCli.connectToHost(QHostAddress(srvAddr), srvPort);
+void TcpCli::slConnect() {
+	tcpCli.connectToHost(srvAddr, srvPort);
 }
 
-void TcpCli::disconnect() {
-
-}
-
-void TcpCli::transmit() {
+void TcpCli::slDisconnect() {
 
 }
 
-const QTcpSocket* TcpCli::getClient() const {
-	return &tcpCli;
+void TcpCli::slTransmit() {
+
 }
 
-const QString TcpCli::getAddr() const {
+const QString TcpCli::getHostAddr() const {
 	return tcpCli.localAddress().toString();
 }
-quint16 TcpCli::getPort() const {
-	return tcpCli.localPort();
+const QString TcpCli::getHostPort() const {
+	return QString::number(tcpCli.localPort());
+}
+
+void TcpCli::slSetSrvAddr(const QString& addr) {
+	srvAddr = QHostAddress(addr);
+}
+
+void TcpCli::slSetSrvPort(const QString& port) {
+	srvPort = port.toInt();
 }
