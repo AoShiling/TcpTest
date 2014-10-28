@@ -24,7 +24,8 @@ public slots:
 	void slSetSrvPort(const QString& port);
 
 signals:
-	void connected();	// wrapper emits signal when socket emits it
+	void sgConnected();
+	void sgDisconnected();
 
 private:
 	QTcpSocket tcpCli;

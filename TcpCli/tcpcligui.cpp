@@ -3,15 +3,19 @@
 TcpCliGui::TcpCliGui(QWidget *parent)
 	: QMainWindow(parent),
 
+	  sCLI("This host: "),
+	  sCLIAP("<addr>:<port>"),
+	  sADDR("<server address>"),
+	  sPORT("<server port>"),
+
 	  pbConnect(new QPushButton("Connect")),
 	  pbDisconnect(new QPushButton("Disconnect")),
 	  lbStatus(new QLabel("<status>")),
 
-	  leAddr(new QLineEdit("<address>")),
-	  lePort(new QLineEdit("<port>")),
+	  leAddr(new QLineEdit(sADDR)),
+	  lePort(new QLineEdit(sPORT)),
 
-	  lbCli(new QLabel("<addr>:<port>")),
-	  sCLI("This host: "),
+	  lbCli(new QLabel(sCLI + sCLIAP)),
 
 	  leMsg(new QLineEdit("<message>")),
 	  pbTransmit(new QPushButton("Transmit"))
@@ -69,7 +73,8 @@ void TcpCliGui::initConnections() {
 	connect(pbDisconnect, SIGNAL(clicked()), &tcpCli, SLOT(slDisconnect()));
 	connect(pbTransmit, SIGNAL(clicked()), &tcpCli, SLOT(slTransmit()));
 
-	connect(&tcpCli, SIGNAL(connected()), this, SLOT(slConnected()));
+	connect(&tcpCli, SIGNAL(sgConnected()), this, SLOT(slConnected()));
+	connect(&tcpCli, SIGNAL(sgDisconnected()), this, SLOT(slDisconnected()));
 	connect(leAddr, SIGNAL(textEdited(QString)), &tcpCli, SLOT(slSetSrvAddr(QString)));
 	connect(lePort, SIGNAL(textEdited(QString)), &tcpCli, SLOT(slSetSrvPort(QString)));
 }
@@ -77,4 +82,11 @@ void TcpCliGui::initConnections() {
 void TcpCliGui::slConnected() {
 	lbStatus->setText("Connected");
 	lbCli->setText(sCLI + tcpCli.getHostAddr() + ":" + tcpCli.getHostPort());
+}
+
+void TcpCliGui::slDisconnected() {
+	lbStatus->setText("Disconnected");
+	lbCli->setText(sCLI + sCLIAP);
+	leAddr->setText(sADDR);
+	lePort->setText(sPORT);
 }

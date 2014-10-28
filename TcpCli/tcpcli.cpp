@@ -1,8 +1,9 @@
 #include "tcpcli.h"
 
 TcpCli::TcpCli() : QObject() {
-	// wrapper emits signal when socket emits it
-	QObject::connect(&tcpCli, SIGNAL(connected()), this, SIGNAL(connected()));
+	QObject::connect(&tcpCli, SIGNAL(connected()), this, SIGNAL(sgConnected()));
+	QObject::connect(&tcpCli, SIGNAL(disconnected()), this, SIGNAL(sgDisconnected()));
+
 }
 
 TcpCli::~TcpCli() {
@@ -14,7 +15,7 @@ void TcpCli::slConnect() {
 }
 
 void TcpCli::slDisconnect() {
-
+	tcpCli.disconnectFromHost();
 }
 
 void TcpCli::slTransmit() {

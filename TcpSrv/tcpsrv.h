@@ -29,6 +29,7 @@ signals:
 	void sgListen();
 	void sgNotAccepted();
 	void sgNotListen();
+	void sgDisconnected();
 
 private:
 	QTcpServer tcpSrv;

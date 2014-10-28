@@ -2,7 +2,7 @@
 
 TcpSrv::TcpSrv() : QObject() {
 	QObject::connect(&tcpSrv, SIGNAL(newConnection()), this, SLOT(slAcceptConnection()));
-	QObject::connect(&tcpSrv, SIGNAL(acceptError()), this, SIGNAL(sgNotAccepted()));
+//	QObject::connect(&tcpSrv, SIGNAL(acceptError()), this, SIGNAL(sgNotAccepted()));
 }
 
 TcpSrv::~TcpSrv() {
@@ -42,6 +42,8 @@ const QString TcpSrv::getCliPort() const {
 
 void TcpSrv::slAcceptConnection() {
 	tcpConnection = tcpSrv.nextPendingConnection();
+	QObject::connect(tcpConnection, SIGNAL(disconnected()), this, SIGNAL(sgDisconnected()));
+
 	tcpSrv.close();
 
 	emit sgAccepted();

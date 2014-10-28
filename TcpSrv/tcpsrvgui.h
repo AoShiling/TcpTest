@@ -21,6 +21,7 @@ public slots:
 	void slListen();
 	void slAccepted();
 	void slError();
+	void slDisconnect();
 
 private:
 	void initMembers();

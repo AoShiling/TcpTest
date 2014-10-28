@@ -20,11 +20,17 @@ public:
 
 public slots:
 	void slConnected();
+	void slDisconnected();
 
 private:
 	void initMembers();
 	void initForm();
 	void initConnections();
+
+	const QString sCLI;
+	const QString sCLIAP;
+	const QString sADDR;
+	const QString sPORT;
 
 	QPushButton* pbConnect;
 	QPushButton* pbDisconnect;
@@ -34,7 +40,6 @@ private:
 	QLineEdit* lePort;
 
 	QLabel* lbCli;
-	const QString sCLI;
 
 	QLineEdit* leMsg;
 	QPushButton* pbTransmit;

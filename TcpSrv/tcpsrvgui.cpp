@@ -27,10 +27,12 @@ TcpSrvGui::~TcpSrvGui() {
 }
 
 void TcpSrvGui::initMembers() {
-	int szLstn = 96;
-	pbListen->setFixedWidth(szLstn);
-	pbClose->setFixedWidth(szLstn);
-	lbStatus->setFixedWidth(szLstn);
+	int szPushButton = 96;
+	pbListen->setFixedWidth(szPushButton);
+	pbClose->setFixedWidth(szPushButton);
+
+	int szLabel = 128;
+	lbStatus->setFixedWidth(szLabel);
 }
 
 void TcpSrvGui::initForm() {
@@ -59,6 +61,7 @@ void TcpSrvGui::initConnections() {
 	connect(&tcpSrv, SIGNAL(sgAccepted()), this, SLOT(slAccepted()));
 	connect(&tcpSrv, SIGNAL(sgNotListen()), this, SLOT(slError()));
 	connect(&tcpSrv, SIGNAL(sgNotAccepted()), this, SLOT(slError()));
+	connect(&tcpSrv, SIGNAL(sgDisconnected()), this, SLOT(slDisconnect()));
 }
 
 void TcpSrvGui::slListen() {
@@ -79,4 +82,10 @@ void TcpSrvGui::slAccepted() {
 
 void TcpSrvGui::slError() {
 	QMessageBox::critical(this, "Error", "Some shit happened.");
+}
+
+void TcpSrvGui::slDisconnect() {
+	lbStatus->setText("Host disconnected\nServer closed");
+	lbSrv->setText(sSRV);
+	lbCli->setText(sCLI);
 }
