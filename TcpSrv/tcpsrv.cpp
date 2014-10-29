@@ -1,6 +1,10 @@
 #include "tcpsrv.h"
 
-TcpSrv::TcpSrv() : QObject() {
+TcpSrv::TcpSrv()
+	: QObject(),
+	  tcpConnection(nullptr),
+	  bytes(0)
+{
 	QObject::connect(&tcpSrv, SIGNAL(newConnection()), this, SLOT(slAcceptConnection()));
 //	QObject::connect(&tcpSrv, SIGNAL(acceptError()), this, SIGNAL(sgNotAccepted()));
 }
@@ -8,7 +12,7 @@ TcpSrv::TcpSrv() : QObject() {
 TcpSrv::~TcpSrv() {
 	tcpSrv.close();
 
-	if (tcpConnection == nullptr)
+	if (tcpConnection != nullptr)
 		tcpConnection->close();
 }
 
@@ -21,7 +25,9 @@ void TcpSrv::slListen() {
 
 void TcpSrv::slClose() {
 	tcpSrv.close();
-	tcpConnection->close();
+
+	if (tcpConnection != nullptr)
+		tcpConnection->close();
 }
 
 const QString TcpSrv::getSrvAddr() const {

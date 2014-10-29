@@ -56,6 +56,7 @@ void TcpSrvGui::initForm() {
 void TcpSrvGui::initConnections() {
 	connect(pbListen, SIGNAL(clicked()), &tcpSrv, SLOT(slListen()));
 	connect(pbClose, SIGNAL(clicked()), &tcpSrv, SLOT(slClose()));
+	connect(pbClose, SIGNAL(clicked()), this, SLOT(slClosed()));
 
 	connect(&tcpSrv, SIGNAL(sgListen()), this, SLOT(slListen()));
 	connect(&tcpSrv, SIGNAL(sgAccepted()), this, SLOT(slAccepted()));
@@ -86,6 +87,12 @@ void TcpSrvGui::slError() {
 
 void TcpSrvGui::slDisconnect() {
 	lbStatus->setText("Host disconnected\nServer closed");
+	lbSrv->setText(sSRV);
+	lbCli->setText(sCLI);
+}
+
+void TcpSrvGui::slClosed() {
+	lbStatus->setText("Server closed");
 	lbSrv->setText(sSRV);
 	lbCli->setText(sCLI);
 }
