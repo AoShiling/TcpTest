@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QLabel>
+#include <QMessageBox>
 
 #include "tcpcli.h"
 
@@ -21,6 +22,8 @@ public:
 public slots:
 	void slConnected();
 	void slDisconnected();
+
+	void slTransmissionError();
 
 private:
 	void initMembers();

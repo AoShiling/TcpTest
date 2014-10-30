@@ -22,15 +22,19 @@ public slots:
 
 	void slSetSrvAddr(const QString& addr);
 	void slSetSrvPort(const QString& port);
+	void slSetMessage(const QString& msg);
 
 signals:
 	void sgConnected();
 	void sgDisconnected();
+	void sgTransmissionError();
 
 private:
 	QTcpSocket tcpCli;
 	QHostAddress srvAddr;
 	quint16 srvPort;
+
+	QByteArray data;
 };
 
 #endif // TCPCLI_H

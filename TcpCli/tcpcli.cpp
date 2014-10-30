@@ -1,9 +1,10 @@
 #include "tcpcli.h"
 
-TcpCli::TcpCli() : QObject() {
+TcpCli::TcpCli()
+	: QObject()
+{
 	QObject::connect(&tcpCli, SIGNAL(connected()), this, SIGNAL(sgConnected()));
 	QObject::connect(&tcpCli, SIGNAL(disconnected()), this, SIGNAL(sgDisconnected()));
-
 }
 
 TcpCli::~TcpCli() {
@@ -19,7 +20,10 @@ void TcpCli::slDisconnect() {
 }
 
 void TcpCli::slTransmit() {
+	int bytes = tcpCli.write(data);
 
+	if (bytes != data.size())
+		emit sgTransmissionError();
 }
 
 const QString TcpCli::getHostAddr() const {
@@ -35,4 +39,8 @@ void TcpCli::slSetSrvAddr(const QString& addr) {
 
 void TcpCli::slSetSrvPort(const QString& port) {
 	srvPort = port.toInt();
+}
+
+void TcpCli::slSetMessage(const QString& msg) {
+	data = msg.toUtf8();
 }

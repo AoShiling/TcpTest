@@ -49,8 +49,16 @@ const QString TcpSrv::getCliPort() const {
 void TcpSrv::slAcceptConnection() {
 	tcpConnection = tcpSrv.nextPendingConnection();
 	QObject::connect(tcpConnection, SIGNAL(disconnected()), this, SIGNAL(sgDisconnected()));
+	QObject::connect(tcpConnection, SIGNAL(readyRead()), this, SLOT(slReadFromSocket()));
 
 	tcpSrv.close();
 
 	emit sgAccepted();
+}
+
+void TcpSrv::slReadFromSocket() {
+	data = tcpConnection->readAll();
+	bytes += data.size();
+
+	emit sgRecvData(data, bytes);
 }

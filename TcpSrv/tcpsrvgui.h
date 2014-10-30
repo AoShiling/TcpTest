@@ -23,6 +23,7 @@ public slots:
 	void slError();
 	void slDisconnect();
 	void slClosed();
+	void slGotData(const QByteArray& data, const int bytes);
 
 private:
 	void initMembers();

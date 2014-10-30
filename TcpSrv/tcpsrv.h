@@ -20,6 +20,7 @@ public:
 
 public slots:
 	void slAcceptConnection();
+	void slReadFromSocket();
 
 	void slListen();
 	void slClose();
@@ -30,11 +31,13 @@ signals:
 	void sgNotAccepted();
 	void sgNotListen();
 	void sgDisconnected();
+	void sgRecvData(const QByteArray& data, const int bytes);
 
 private:
 	QTcpServer tcpSrv;
 	QTcpSocket* tcpConnection;
 
+	QByteArray data;
 	int bytes;
 };
 

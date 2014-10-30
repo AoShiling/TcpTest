@@ -63,6 +63,7 @@ void TcpSrvGui::initConnections() {
 	connect(&tcpSrv, SIGNAL(sgNotListen()), this, SLOT(slError()));
 	connect(&tcpSrv, SIGNAL(sgNotAccepted()), this, SLOT(slError()));
 	connect(&tcpSrv, SIGNAL(sgDisconnected()), this, SLOT(slDisconnect()));
+	connect(&tcpSrv, SIGNAL(sgRecvData(QByteArray,int)), this, SLOT(slGotData(QByteArray,int)));
 }
 
 void TcpSrvGui::slListen() {
@@ -95,4 +96,9 @@ void TcpSrvGui::slClosed() {
 	lbStatus->setText("Server closed");
 	lbSrv->setText(sSRV);
 	lbCli->setText(sCLI);
+}
+
+void TcpSrvGui::slGotData(const QByteArray& data, const int bytes) {
+	lbMessage->setText(sMSG + QString(data));
+	lbBytes->setText(sBTS + QString::number(bytes));
 }

@@ -75,8 +75,11 @@ void TcpCliGui::initConnections() {
 
 	connect(&tcpCli, SIGNAL(sgConnected()), this, SLOT(slConnected()));
 	connect(&tcpCli, SIGNAL(sgDisconnected()), this, SLOT(slDisconnected()));
+	connect(&tcpCli, SIGNAL(sgTransmissionError()), this, SLOT(slTransmissionError()));
+
 	connect(leAddr, SIGNAL(textEdited(QString)), &tcpCli, SLOT(slSetSrvAddr(QString)));
 	connect(lePort, SIGNAL(textEdited(QString)), &tcpCli, SLOT(slSetSrvPort(QString)));
+	connect(leMsg, SIGNAL(textEdited(QString)), &tcpCli, SLOT(slSetMessage(QString)));
 }
 
 void TcpCliGui::slConnected() {
@@ -89,4 +92,8 @@ void TcpCliGui::slDisconnected() {
 	lbCli->setText(sCLI + sCLIAP);
 	leAddr->setText(sADDR);
 	lePort->setText(sPORT);
+}
+
+void TcpCliGui::slTransmissionError() {
+	QMessageBox::critical(this, "Transmission error", "Message is not entire");
 }
