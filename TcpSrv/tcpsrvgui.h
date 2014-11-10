@@ -31,6 +31,7 @@ private:
 	void initConnections();
 
 	const QString sMSG;
+	const QString sFILE;
 	const QString sSRV;
 	const QString sCLI;
 	const QString sBTS;
@@ -40,6 +41,7 @@ private:
 	QLabel* lbStatus;
 
 	QLabel* lbMessage;
+	QLabel* lbFile;
 	QLabel* lbSrv;
 	QLabel* lbCli;
 	QLabel* lbBytes;

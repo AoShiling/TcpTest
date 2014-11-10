@@ -34,11 +34,13 @@ private:
 	const QString sCLIAP;
 	const QString sADDR;
 	const QString sPORT;
+	const QString sFILE;
 
 	QPushButton* pbConnect;
 	QPushButton* pbDisconnect;
 	QLabel* lbStatus;
 
+	QLabel* lbServer;
 	QLineEdit* leAddr;
 	QLineEdit* lePort;
 
@@ -46,6 +48,9 @@ private:
 
 	QLineEdit* leMsg;
 	QPushButton* pbTransmit;
+
+	QLabel* lbFile;
+	QPushButton* pbFile;
 
 	TcpCli tcpCli;
 };

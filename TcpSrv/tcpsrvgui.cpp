@@ -4,6 +4,7 @@ TcpSrvGui::TcpSrvGui(QWidget *parent)
 	: QMainWindow(parent),
 
 	  sMSG("Message: "),
+	  sFILE("File: "),
 	  sSRV("srv: "),
 	  sCLI("cli: "),
 	  sBTS("Total bytes: "),
@@ -13,6 +14,7 @@ TcpSrvGui::TcpSrvGui(QWidget *parent)
 	  lbStatus(new QLabel("<status>")),
 
 	  lbMessage(new QLabel(sMSG)),
+	  lbFile(new QLabel(sFILE)),
 	  lbSrv(new QLabel(sSRV + "<addr>:<port>")),
 	  lbCli(new QLabel(sCLI + "<addr>:<port>")),
 	  lbBytes(new QLabel(sBTS + "0"))
@@ -46,6 +48,7 @@ void TcpSrvGui::initForm() {
 	vbxMain->addWidget(lbSrv);
 	vbxMain->addWidget(lbCli);
 	vbxMain->addWidget(lbMessage);
+	vbxMain->addWidget(lbFile);
 	vbxMain->addWidget(lbBytes);
 
 	setCentralWidget(new QWidget);

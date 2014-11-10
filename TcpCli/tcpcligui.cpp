@@ -7,18 +7,23 @@ TcpCliGui::TcpCliGui(QWidget *parent)
 	  sCLIAP("<addr>:<port>"),
 	  sADDR("<server address>"),
 	  sPORT("<server port>"),
+	  sFILE("File: "),
 
 	  pbConnect(new QPushButton("Connect")),
 	  pbDisconnect(new QPushButton("Disconnect")),
 	  lbStatus(new QLabel("<status>")),
 
+	  lbServer(new QLabel("Server:")),
 	  leAddr(new QLineEdit(sADDR)),
 	  lePort(new QLineEdit(sPORT)),
 
 	  lbCli(new QLabel(sCLI + sCLIAP)),
 
 	  leMsg(new QLineEdit("<message>")),
-	  pbTransmit(new QPushButton("Transmit"))
+	  pbTransmit(new QPushButton("Transmit")),
+
+	  lbFile(new QLabel(sFILE + "<path for saving>")),
+	  pbFile(new QPushButton("File"))
 {
 	initMembers();
 	initForm();
@@ -34,6 +39,7 @@ void TcpCliGui::initMembers() {
 	pbConnect->setFixedWidth(szConns);
 	pbDisconnect->setFixedWidth(szConns);
 	pbTransmit->setFixedWidth(szConns);
+	pbFile->setFixedWidth(szConns);
 
 	lbStatus->setFixedWidth(szConns);
 
@@ -41,6 +47,7 @@ void TcpCliGui::initMembers() {
 	lePort->setFixedWidth(96);
 
 	leMsg->setFixedWidth(192);
+	lbFile->setFixedWidth(192);
 }
 
 void TcpCliGui::initForm() {
@@ -57,11 +64,17 @@ void TcpCliGui::initForm() {
 	hbxMsg->addWidget(leMsg);
 	hbxMsg->addWidget(pbTransmit);
 
+	QHBoxLayout* hbxFile = new QHBoxLayout;
+	hbxFile->addWidget(lbFile);
+	hbxFile->addWidget(pbFile);
+
 	QVBoxLayout* vbxMain = new QVBoxLayout;
 	vbxMain->addLayout(hbxConnect);
+	vbxMain->addWidget(lbServer);
 	vbxMain->addLayout(hbxParams);
 	vbxMain->addWidget(lbCli);
 	vbxMain->addLayout(hbxMsg);
+	vbxMain->addLayout(hbxFile);
 
 	setCentralWidget(new QWidget);
 	centralWidget()->setLayout(vbxMain);
