@@ -23,11 +23,13 @@ public slots:
 	void slSetSrvAddr(const QString& addr);
 	void slSetSrvPort(const QString& port);
 	void slSetMessage(const QString& msg);
+	void slSetRaw(const QByteArray& raw);
 
 signals:
 	void sgConnected();
 	void sgDisconnected();
 	void sgTransmissionError();
+	void sgTransmissionDone();
 
 private:
 	QTcpSocket tcpCli;

@@ -9,6 +9,7 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QMessageBox>
+#include <QFileDialog>
 
 #include "tcpcli.h"
 
@@ -22,8 +23,10 @@ public:
 public slots:
 	void slConnected();
 	void slDisconnected();
+	void slFileSend();
 
 	void slTransmissionError();
+	void slTransmissionDone();
 
 private:
 	void initMembers();
@@ -51,6 +54,7 @@ private:
 
 	QLabel* lbFile;
 	QPushButton* pbFile;
+	QString sFile;
 
 	TcpCli tcpCli;
 };

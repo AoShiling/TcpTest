@@ -22,8 +22,9 @@ TcpCliGui::TcpCliGui(QWidget *parent)
 	  leMsg(new QLineEdit("<message>")),
 	  pbTransmit(new QPushButton("Transmit")),
 
-	  lbFile(new QLabel(sFILE + "<path for saving>")),
-	  pbFile(new QPushButton("File"))
+	  lbFile(new QLabel(sFILE + "<path for send>")),
+	  pbFile(new QPushButton("File")),
+	  sFile("")
 {
 	initMembers();
 	initForm();
@@ -85,10 +86,12 @@ void TcpCliGui::initConnections() {
 	connect(pbConnect, SIGNAL(clicked()), &tcpCli, SLOT(slConnect()));
 	connect(pbDisconnect, SIGNAL(clicked()), &tcpCli, SLOT(slDisconnect()));
 	connect(pbTransmit, SIGNAL(clicked()), &tcpCli, SLOT(slTransmit()));
+	connect(pbFile, SIGNAL(clicked()), this, SLOT(slFileSend()));
 
 	connect(&tcpCli, SIGNAL(sgConnected()), this, SLOT(slConnected()));
 	connect(&tcpCli, SIGNAL(sgDisconnected()), this, SLOT(slDisconnected()));
 	connect(&tcpCli, SIGNAL(sgTransmissionError()), this, SLOT(slTransmissionError()));
+	connect(&tcpCli, SIGNAL(sgTransmissionDone()), this, SLOT(slTransmissionDone()));
 
 	connect(leAddr, SIGNAL(textEdited(QString)), &tcpCli, SLOT(slSetSrvAddr(QString)));
 	connect(lePort, SIGNAL(textEdited(QString)), &tcpCli, SLOT(slSetSrvPort(QString)));
@@ -107,6 +110,32 @@ void TcpCliGui::slDisconnected() {
 	lePort->setText(sPORT);
 }
 
+void TcpCliGui::slFileSend() {
+	sFile = QFileDialog::getOpenFileName(this, "Send file", sFile);
+
+	if (sFile.isEmpty())
+		return;
+
+	const int pos = 22;
+	if (sFile.size() > pos)
+		lbFile->setText(sFILE + sFile.left(pos) + "...");
+	else
+		lbFile->setText(sFILE + sFile);
+
+	QFile file(sFile);
+	const QByteArray& data = file.readAll();
+
+	if (data.isEmpty())
+		return;
+
+	tcpCli.slSetRaw(data);
+	tcpCli.slTransmit();
+}
+
 void TcpCliGui::slTransmissionError() {
 	QMessageBox::critical(this, "Transmission error", "Message is not entire");
+}
+
+void TcpCliGui::slTransmissionDone() {
+	QMessageBox::about(this, "Transmission done", "Message transmitted");
 }

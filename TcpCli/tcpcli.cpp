@@ -24,11 +24,14 @@ void TcpCli::slTransmit() {
 
 	if (bytes != data.size())
 		emit sgTransmissionError();
+	else
+		emit sgTransmissionDone();
 }
 
 const QString TcpCli::getHostAddr() const {
 	return tcpCli.localAddress().toString();
 }
+
 const QString TcpCli::getHostPort() const {
 	return QString::number(tcpCli.localPort());
 }
@@ -43,4 +46,8 @@ void TcpCli::slSetSrvPort(const QString& port) {
 
 void TcpCli::slSetMessage(const QString& msg) {
 	data = msg.toUtf8();
+}
+
+void TcpCli::slSetRaw(const QByteArray &raw) {
+	data = raw;
 }
