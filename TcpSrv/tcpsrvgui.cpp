@@ -17,7 +17,10 @@ TcpSrvGui::TcpSrvGui(QWidget *parent)
 	  lbFile(new QLabel(sFILE)),
 	  lbSrv(new QLabel(sSRV + "<addr>:<port>")),
 	  lbCli(new QLabel(sCLI + "<addr>:<port>")),
-	  lbBytes(new QLabel(sBTS + "0"))
+	  lbBytes(new QLabel(sBTS + "0")),
+
+	  switcher(false),
+	  path("")
 {
 	initMembers();
 	initForm();
@@ -102,6 +105,22 @@ void TcpSrvGui::slClosed() {
 }
 
 void TcpSrvGui::slGotData(const QByteArray& data, const int bytes) {
-	lbMessage->setText(sMSG + QString(data));
-	lbBytes->setText(sBTS + QString::number(bytes));
+	if (switcher) {
+		path = QFileDialog::getSaveFileName(this, "Save file", path);
+		lbMessage->setText(sFILE + path);
+
+		QFile file(path);
+		file.write(data);
+		file.close();
+
+		switcher = false;
+	}
+	else {
+		QString message(data);
+		if (message == "file")
+			switcher = true;
+
+		lbMessage->setText(sMSG + QString(data));
+		lbBytes->setText(sBTS + QString::number(bytes));
+	}
 }

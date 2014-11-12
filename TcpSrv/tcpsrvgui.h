@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QMessageBox>
+#include <QFileDialog>
 
 #include "tcpsrv.h"
 
@@ -47,6 +48,8 @@ private:
 	QLabel* lbBytes;
 
 	TcpSrv tcpSrv;
+	bool switcher;
+	QString path;
 };
 
 #endif // TCPSRVGUI_H
